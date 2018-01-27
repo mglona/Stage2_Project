@@ -90,7 +90,7 @@ def ask_for_answer(quiz_string, blank_space_list, answer_list):
 		if replacement != False:
 			print 
 			user_input = raw_input("What should be substituted in for " + replacement + "? ")
-			answer_is_right = is_correct(user_input, answer_list)
+			answer_is_right = is_correct(user_input, answer_list, replacement)
 			if answer_is_right == True:
 				print 
 				quiz_string = " ".join(quiz_string)
@@ -99,7 +99,9 @@ def ask_for_answer(quiz_string, blank_space_list, answer_list):
 				print 
 				quiz_string = quiz_string.split()
 			else:
-				print wrong_answer(replacement, quiz_string, answer_list)
+				quiz_string = wrong_answer(replacement, quiz_string, answer_list)
+				print quiz_string
+				quiz_string = quiz_string.split()
 	quiz_string = " ".join(quiz_string)
 	return quiz_string
 
@@ -137,7 +139,7 @@ def wrong_answer(replacement, quiz_string, answer_list):
 		quiz_string = quiz_string.split()
 		user_input = raw_input("What should be substituted in for " + replacement + "? ")
 		print
-		answer_is_right = is_correct(user_input, answer_list)
+		answer_is_right = is_correct(user_input, answer_list, replacement)
 		if answer_is_right == True:
 			quiz_string = " ".join(quiz_string)
 			quiz_string = quiz_string.replace(replacement, user_input)
@@ -162,7 +164,7 @@ def is_blank_space(word, blank_space_list):
 			return element
 	return False
 
-def is_correct(user_answer, answer_list):
+def is_correct(user_answer, answer_list, replacement):
 	#output: either True or False
 	#input: user_answer and answer_list
 	#process:
@@ -170,7 +172,11 @@ def is_correct(user_answer, answer_list):
 	1) the function will check if the user_answer is in answer_list, if it is, it will return True.
 	2) if not, it will return False.
 	'''
-	if user_answer in answer_list:
+	
+	replacement = " ".join(replacement)
+	replacement = replacement.split()
+	number = int(replacement[2])
+	if user_answer == answer_list[number-1]:
 		return True 
 	else:
 		return False
@@ -187,18 +193,26 @@ def play_game():
 	5) Prompts the user for the answer on the blank by returning the value from the function ask_for_answer
 	6) After the ask_for_answer works, it will return the string "Congratulations! You have finished the game!"
 	'''
+	game_levels = ['easy', 'medium', 'hard']
 	game_level = diff_level()
-	print "\nHere's the quiz: \n"
-	if game_level == "easy":
-		print print_quiz(quiz_easy)
-		ask_for_answer(quiz_easy, blank_space1, answer_easy)
-	if game_level == "medium":
-		print print_quiz(quiz_medium)
-		ask_for_answer(quiz_medium, blank_space1, answer_medium)
-	if game_level == "hard":
-		print print_quiz(quiz_hard)
-		ask_for_answer(quiz_hard, blank_space1, answer_hard)
-	return "Congratulations! You have finished the game!"
+	if game_level in game_levels:
+		print "\nHere's the quiz: \n"
+		if game_level == "easy":
+			print print_quiz(quiz_easy)
+			ask_for_answer(quiz_easy, blank_space1, answer_easy)
+		if game_level == "medium":
+			print print_quiz(quiz_medium)
+			ask_for_answer(quiz_medium, blank_space1, answer_medium)
+		if game_level == "hard":
+			print print_quiz(quiz_hard)
+			ask_for_answer(quiz_hard, blank_space1, answer_hard)
+		return "Congratulations! You have finished the game!"
+	else:
+		print 
+		print "That's not a valid game level."
+		print
+		play_game()
+	
 		#correct_answer = is_correct(user_answer, answer_hard)
 		#print correct_answer
 	
