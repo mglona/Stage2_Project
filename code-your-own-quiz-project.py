@@ -140,6 +140,7 @@ def wrong_answer(replacement, quiz_string, answer_list):
 		user_input = raw_input("What should be substituted in for " + replacement + "? ")
 		print
 		answer_is_right = is_correct(user_input, answer_list, replacement)
+		is_last_number_and_from_wrong_answer(replacement, quiz_string, answer_list)
 		if answer_is_right == True:
 			quiz_string = " ".join(quiz_string)
 			quiz_string = quiz_string.replace(replacement, user_input)
@@ -180,6 +181,24 @@ def is_correct(user_answer, answer_list, replacement):
 		return True 
 	else:
 		return False
+
+def is_last_number_and_from_wrong_answer(replacement, quiz_string, answer_list):
+	number_source = " ".join(replacement)
+	number_source = number_source.split()
+	number = number_source[2]
+	if number == 5:
+		user_input = raw_input("What should be substituted in for " + replacement + "? ")
+		answer_is_right = is_correct(user_input, answer_list, quiz_string)
+		if answer_is_right == True:
+			quiz_string = quiz_string.replace(replacement, user_input)
+			print quiz_string
+			print 
+			return "Congratulations! You have finished the game!"
+		else: 
+				return quiz_string
+	else: 
+		return quiz_string
+
 
 def play_game():
 	#output: prints the game to the console
